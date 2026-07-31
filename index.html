@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OJJO.STROY | Premium Qurilish Materiallari</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-main: #f3f5f8; --bg-card: rgba(255, 255, 255, 0.97); --text-main: #10151f; --text-muted: #6b7280;
+            --border: rgba(15, 23, 42, 0.07); --shadow: 0 4px 24px rgba(15, 23, 42, 0.05); --shadow-hover: 0 24px 48px rgba(15, 23, 42, 0.10);
+            --accent: #e8720c; --accent-2: #0f6fb3; --accent-light: rgba(232, 114, 12, 0.10); --accent-gradient: linear-gradient(135deg, #ff9a3d, #e8720c);
+            --hero-gradient: radial-gradient(circle at 15% -10%, rgba(232,114,12,.18), transparent 45%), radial-gradient(circle at 100% 0%, rgba(15,111,179,.15), transparent 45%);
+            --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --sidebar-w: 260px;
+            --radius: 18px; --radius-sm: 12px;
+            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="dark"] {
+            --bg-main: #0b1120; --bg-card: #151d2e; --text-main: #f1f5f9; --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08); --shadow: 0 4px 24px rgba(0, 0, 0, 0.35); --shadow-hover: 0 24px 48px rgba(0, 0, 0, 0.55);
+            --accent-light: rgba(255, 154, 61, 0.14);
+            --hero-gradient: radial-gradient(circle at 15% -10%, rgba(232,114,12,.22), transparent 45%), radial-gradient(circle at 100% 0%, rgba(15,111,179,.20), transparent 45%);
+        }
+
+        html, body { margin: 0; padding: 0; overscroll-behavior: none; -webkit-overflow-scrolling: touch; touch-action: manipulation; }
+        * { box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        body { background: var(--bg-main); color: var(--text-main); transition: background 0.4s, color 0.4s; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; } ul { list-style: none; }
+        .hidden { display: none !important; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        .font-brand { font-family: 'Manrope', 'Inter', sans-serif; letter-spacing: -0.5px; }
+
+        #loader { position: fixed; inset: 0; background: #0b1120; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 99999; transition: opacity 0.8s ease, visibility 0.8s; }
+        #loader.loader-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-icon { font-size: 4rem; color: #ff9a3d; animation: iconPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 0.2s; opacity: 0; transform: scale(0) rotate(-180deg); filter: drop-shadow(0 0 20px rgba(255, 154, 61, 0.4)); }
+        .loader-text-wrap { font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 900; color: #fff; margin-top: 20px; display: flex; align-items: baseline; letter-spacing: -2px; font-family: 'Manrope', sans-serif; }
+        .loader-text-1 { color: #ff9a3d; animation: slideL 0.6s ease-out forwards; animation-delay: 0.8s; opacity: 0; transform: translateX(-60px); }
+        .loader-dot { color: #fff; margin: 0 2px; animation: fadeUp 0.4s ease-out forwards; animation-delay: 1.1s; opacity: 0; }
+        .loader-text-2 { color: #ffffff; animation: slideR 0.6s ease-out forwards; animation-delay: 0.8s; opacity: 0; transform: translateX(60px); }
+        .loader-line { height: 4px; background: linear-gradient(90deg, transparent, #ff9a3d, transparent); margin: 20px auto 0; border-radius: 2px; animation: drawLine 0.8s ease-out forwards; animation-delay: 1.3s; width: 0; }
+        .loader-subtitle { color: #64748b; font-size: clamp(0.6rem, 2vw, 0.9rem); letter-spacing: 4px; margin-top: 15px; text-transform: uppercase; font-weight: 600; animation: fadeUp 0.6s ease-out forwards; animation-delay: 1.6s; opacity: 0; }
+        @keyframes iconPop { to { opacity: 1; transform: scale(1) rotate(0deg); } }
+        @keyframes slideL { to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideR { to { opacity: 1; transform: translateX(0); } }
+        @keyframes drawLine { to { width: 120px; } }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } from { transform: translateY(15px); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shimmer { 0% { background-position: -300px 0; } 100% { background-position: 300px 0; } }
+
+        .store-nav { height: 62px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 16px; position: sticky; top: 0; z-index: 50; backdrop-filter: blur(20px); transition: background 0.4s, border-color 0.4s; }
+        .logo { font-size: 1.25rem; font-weight: 900; color: var(--accent); display: flex; align-items: center; gap: 7px; }
+        .logo i { -webkit-text-fill-color: initial; }
+        .admin-trigger { font-size: 0.7rem; color: var(--text-muted); opacity: 0.35; cursor: pointer; background: none; border: none; transition: var(--transition); font-weight: 500; padding: 5px; }
+        .admin-trigger:hover { opacity: 0.9; color: var(--accent); }
+        .hero { padding: 42px 16px 18px; text-align: center; background: var(--hero-gradient); position: relative; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 50px; background: var(--accent-light); color: var(--accent); font-weight: 700; font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
+        .hero h1 { font-size: clamp(1.6rem, 5vw, 2.7rem); font-weight: 900; line-height: 1.12; letter-spacing: -1.2px; margin-bottom: 10px; font-family: 'Manrope', sans-serif; }
+        .hero p { color: var(--text-muted); font-size: clamp(0.85rem, 2vw, 1.02rem); max-width: 520px; margin: 0 auto; line-height: 1.5; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 16px 40px; }
+        .search-wrapper { margin: 22px 0 22px; }
+        .search-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; box-shadow: var(--shadow); transition: background 0.4s, border-color 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; gap: 10px; }
+        .search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-light); }
+        .search-top { display: flex; align-items: center; gap: 9px; }
+        .search-top i { font-size: 1.15rem; color: var(--accent); }
+        .search-top input { border: none; background: none; outline: none; width: 100%; font-size: 0.98rem; color: var(--text-main); font-weight: 500; }
+        .tags-container { display: flex; gap: 7px; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid var(--border); }
+        .tag { padding: 7px 14px; border-radius: 50px; background: var(--bg-main); color: var(--text-muted); font-weight: 600; cursor: pointer; transition: all 0.25s; font-size: 0.76rem; border: 1px solid var(--border); white-space: nowrap; }
+        .tag:hover { border-color: var(--accent); color: var(--accent); }
+        .tag.active { background: var(--accent-gradient); color: #fff; border-color: transparent; box-shadow: 0 6px 16px rgba(232,114,12,0.3); }
+        .store-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 10px; }
+        .mode-toggle { display: flex; background: var(--bg-card); border-radius: 12px; padding: 3px; border: 1px solid var(--border); }
+        .mode-btn { padding: 8px 15px; border-radius: 9px; border: none; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; display: flex; align-items: center; gap: 5px; background: transparent; color: var(--text-muted); }
+        .mode-btn.active { background: var(--accent-light); color: var(--accent); }
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+        .store-item { background: var(--bg-card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer; display: flex; flex-direction: column; animation: fadeInUp 0.4s ease both; }
+        .store-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-color: transparent; }
+        .store-img { height: 165px; width: 100%; background: var(--bg-main); overflow: hidden; position: relative; }
+        .store-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .store-item:hover .store-img img { transform: scale(1.06); }
+        .stock-badge { position: absolute; top: 8px; left: 8px; padding: 3px 9px; border-radius: 50px; font-size: 0.65rem; font-weight: 700; background: rgba(239,68,68,0.92); color: #fff; }
+        .store-body { padding: 15px; text-align: center; display: flex; flex-direction: column; flex: 1; }
+        .store-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .store-price { font-size: 1.15rem; font-weight: 800; color: var(--accent); margin-top: auto; margin-bottom: 12px; }
+        .btn-add-cart { width: 100%; padding: 10px; background: var(--accent-gradient); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.85rem; box-shadow: 0 6px 14px rgba(232,114,12,0.25); }
+        .btn-add-cart:hover { filter: brightness(1.06); transform: translateY(-1px); }
+        .btn-add-cart:disabled { opacity: 0.5; cursor: not-allowed; filter: none; transform: none; }
+
+        .skeleton { background: linear-gradient(90deg, var(--bg-main) 25%, var(--border) 37%, var(--bg-main) 63%); background-size: 400px 100%; animation: shimmer 1.4s infinite linear; border-radius: var(--radius); }
+        .skeleton-card { height: 280px; }
+
+        .overlay { position: fixed; inset: 0; background: rgba(10,15,25,0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: flex-start; z-index: 2000; opacity: 0; visibility: hidden; transition: var(--transition); padding: 0; overflow-y: auto; }
+        .overlay.show { opacity: 1; visibility: visible; }
+        .modal { background: var(--bg-card); border-radius: 22px 22px 0 0; padding: 22px; width: 100%; max-width: 500px; margin-top: auto; margin-bottom: 0; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); border: 1px solid var(--border); position: relative; }
+        .overlay.show .modal { transform: translateY(0); }
+        .modal h2 { margin-bottom: 16px; text-align: center; font-size: 1.12rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Manrope', sans-serif; }
+        .fg { margin-bottom: 14px; }
+        .fg label { display: block; margin-bottom: 5px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+        .fg input, .fg select { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-main); color: var(--text-main); font-size: 1rem; outline: none; transition: all 0.3s; -webkit-appearance: none; }
+        .fg input:focus, .fg select:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-light); }
+        .upload-zone { border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s; position: relative; }
+        .upload-zone:hover { border-color: var(--accent); background: var(--accent-light); }
+        .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        .preview-box { margin-top: 10px; border-radius: var(--radius-sm); overflow: hidden; display: none; border: 1px solid var(--border); }
+        .preview-box img { width: 100%; height: 150px; object-fit: cover; display: block; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
+        .modal-actions button { flex: 1; padding: 14px; border-radius: var(--radius-sm); border: none; font-weight: 700; cursor: pointer; transition: all 0.3s; font-size: 0.95rem; }
+        .m-cancel { background: var(--bg-main); color: var(--text-main); }
+        .m-save { background: var(--accent-gradient); color: #fff; box-shadow: 0 6px 14px rgba(232,114,12,0.25); }
+        .m-save:disabled { opacity: 0.6; cursor: not-allowed; }
+        .close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.3rem; color: var(--text-muted); cursor: pointer; transition: all 0.3s; z-index: 10; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .close-modal:hover { color: var(--danger); background: rgba(239,68,68,0.1); }
+        .pd-img { width: 100%; height: 210px; object-fit: cover; border-radius: 14px; margin-bottom: 15px; }
+        .pd-price { font-size: 1.65rem; font-weight: 900; color: var(--accent); margin: 8px 0; }
+
+        @media (min-width: 600px) {
+            .overlay { align-items: center; padding: 20px; }
+            .modal { border-radius: 22px; margin: 0; transform: translateY(30px) scale(0.95); max-height: 90vh; overflow-y: auto; }
+            .overlay.show .modal { transform: translateY(0) scale(1); }
+        }
+
+        .cart-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100vh; height: 100dvh; background: var(--bg-card); border-left: 1px solid var(--border); z-index: 3000; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s; display: flex; flex-direction: column; }
+        .cart-panel.open { right: 0; }
+        .cart-header { padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .cart-header h3 { font-family: 'Manrope', sans-serif; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 16px; }
+        .cart-item { display: flex; gap: 10px; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .cart-item-img { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; background: var(--bg-main); flex-shrink: 0; }
+        .cart-item-info { flex: 1; min-width: 0; }
+        .cart-item-name { font-weight: 600; margin-bottom: 3px; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cart-item-price { color: var(--accent); font-weight: 700; font-size: 0.85rem; }
+        .cart-item-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .qty-btn { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-main); color: var(--text-main); font-size: 1rem; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
+        .qty-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .cart-footer { padding: 16px; border-top: 1px solid var(--border); background: var(--bg-main); flex-shrink: 0; }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; }
+        .btn-checkout { width: 100%; padding: 14px; background: linear-gradient(135deg, #34d399, #059669); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 18px rgba(5,150,105,0.25); }
+        .btn-checkout:hover { filter: brightness(1.05); }
+        .btn-checkout:disabled { opacity: 0.6; cursor: not-allowed; }
+        .cart-empty { text-align: center; margin-top: 60px; color: var(--text-muted); }
+        .cart-empty i { font-size: 3.2rem; opacity: 0.2; margin-bottom: 10px; display: block; }
+        .cart-badge { position: absolute; top: -6px; right: -6px; width: 19px; height: 19px; background: var(--danger); color: #fff; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 0 2px var(--bg-card); }
+        .btn-clear-cart { width: 100%; padding: 10px; background: transparent; border: 1px solid var(--danger); color: var(--danger); border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; margin-top: 8px; transition: all 0.3s; font-size: 0.85rem; }
+        .btn-clear-cart:hover { background: var(--danger); color: #fff; }
+
+        .app { display: flex; min-height: 100vh; min-height: 100dvh; }
+        .sidebar { width: var(--sidebar-w); height: 100vh; height: 100dvh; position: fixed; top: 0; left: 0; background: var(--bg-card); border-right: 1px solid var(--border); padding: 16px 0; z-index: 100; transition: all 0.4s; display: flex; flex-direction: column; overflow-y: auto; }
+        .sidebar.collapsed { width: 70px; }
+        .sidebar.collapsed .txt { display: none; }
+        .sidebar.collapsed .logo { justify-content: center; padding: 0 10px 20px; }
+        .sidebar .logo { padding: 0 20px 20px; }
+        .nav-menu { flex: 1; padding: 0 10px; }
+        .nav-link { display: flex; align-items: center; padding: 12px 15px; margin-bottom: 4px; border-radius: var(--radius-sm); color: var(--text-muted); font-weight: 500; cursor: pointer; transition: all 0.25s; gap: 10px; }
+        .nav-link:hover { background: var(--accent-light); color: var(--text-main); }
+        .nav-link.active { background: var(--accent-gradient); color: #fff; font-weight: 700; box-shadow: 0 6px 14px rgba(232,114,12,0.25); }
+        .nav-link i { font-size: 1.2rem; min-width: 20px; text-align: center; }
+        .sb-footer { padding: 15px; border-top: 1px solid var(--border); margin: 0 10px; flex-shrink: 0; }
+        .btn-back { width: 100%; padding: 10px; background: none; border: none; color: var(--danger); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; border-radius: var(--radius-sm); transition: all 0.3s; }
+        .btn-back:hover { background: rgba(239, 68, 68, 0.1); }
+        .main { flex: 1; margin-left: var(--sidebar-w); transition: margin-left 0.4s; }
+        .sidebar.collapsed ~ .main { margin-left: 70px; }
+        .topbar { height: 62px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 16px; position: sticky; top: 0; z-index: 90; transition: all 0.4s; flex-shrink: 0; }
+        .top-left { display: flex; align-items: center; gap: 10px; }
+        .toggle-sb { font-size: 1.3rem; cursor: pointer; background: none; border: none; color: var(--text-main); padding: 5px; }
+        .top-right { display: flex; align-items: center; gap: 10px; }
+        .theme-btn { font-size: 1.3rem; cursor: pointer; background: none; border: none; color: var(--text-main); }
+        .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--accent-gradient); display: flex; justify-content: center; align-items: center; color: #fff; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+        .page-content { padding: 16px; overflow-x: hidden; }
+        .stats-grid, .inv-stats, .cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 22px; }
+        .stat-box, .inv-stat, .cat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); transition: all 0.3s; }
+        .stat-box:hover, .inv-stat:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        .stat-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.05rem; color: #fff; margin-bottom: 10px; }
+        .si-blue { background: linear-gradient(135deg, #60a5fa, #0f6fb3); } .si-green { background: linear-gradient(135deg, #34d399, #059669); } .si-orange { background: var(--accent-gradient); } .si-red { background: linear-gradient(135deg, #f87171, #dc2626); }
+        .stat-val, .inv-stat h4 { font-size: 1.3rem; font-weight: 800; margin-bottom: 2px; letter-spacing: -0.5px; font-family: 'Manrope', sans-serif; }
+        .stat-lbl, .inv-stat p { font-size: 0.75rem; color: var(--text-muted); }
+        .box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); margin-bottom: 22px; transition: all 0.4s; overflow: hidden; }
+        .box h3 { margin-bottom: 14px; font-weight: 700; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Manrope', sans-serif; }
+        .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -16px; padding: 0 16px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { padding: 11px 12px; text-align: left; border-bottom: 1px solid var(--border); transition: all 0.3s; white-space: nowrap; }
+        th { color: var(--text-muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4px; }
+        td { font-size: 0.85rem; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: var(--accent-light); }
+        .tbl-img { width: 36px; height: 36px; object-fit: cover; border-radius: 9px; border: 1px solid var(--border); }
+        .btn { padding: 7px 11px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; font-size: 0.75rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+        .btn-primary { background: var(--accent-gradient); color: #fff; margin-bottom: 14px; box-shadow: 0 6px 14px rgba(232,114,12,0.25); }
+        .btn-primary:hover { filter: brightness(1.05); }
+        .btn-ghost { background: var(--accent-light); color: var(--accent); }
+        .btn-danger-ghost { background: rgba(239, 68,68,0.1); color: var(--danger); }
+        .btn:hover { transform: translateY(-1px); }
+        .status-pill { padding: 3px 9px; border-radius: 50px; font-size: 0.7rem; font-weight: 600; }
+        .sp-success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .sp-warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .sp-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .debt-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg-main); border-radius: var(--radius-sm); margin-bottom: 8px; gap: 10px; }
+        .inv-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-main); border-radius: var(--radius-sm); border: 1px solid var(--border); transition: all 0.3s; margin-bottom: 10px; }
+        .inv-item:hover { border-color: var(--accent); }
+        .inv-img { width: 46px; height: 46px; border-radius: 9px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; }
+        .inv-info { flex: 1; min-width: 0; }
+        .inv-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .inv-cat { font-size: 0.65rem; color: var(--accent); margin-bottom: 6px; display: inline-block; padding: 2px 7px; background: var(--accent-light); border-radius: 5px; font-weight: 600; }
+        .inv-bar-wrap { width: 100%; height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; }
+        .inv-bar { height: 100%; border-radius: 10px; transition: width 0.8s ease; }
+        .bar-green { background: var(--success); } .bar-yellow { background: var(--warning); } .bar-red { background: var(--danger); }
+        .inv-stock-nums { text-align: right; min-width: 50px; flex-shrink: 0; }
+        .inv-stock-val { font-size: 1.1rem; font-weight: 800; }
+        .inv-stock-label { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; display: block; margin-top: 1px; }
+        .cat-card { text-align: center; cursor: default; }
+        .cat-icon { width: 42px; height: 42px; margin: 0 auto 8px; border-radius: 11px; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; }
+        .cat-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; }
+        .cat-count { font-size: 0.8rem; color: var(--text-muted); }
+        .cat-actions { display: flex; gap: 5px; justify-content: center; margin-top: 8px; }
+        .empty-state { text-align: center; padding: 34px 0; color: var(--text-muted); }
+        .empty-state i { font-size: 2.2rem; opacity: 0.2; margin-bottom: 8px; display: block; }
+
+        .toast-container { position: fixed; top: 10px; left: 10px; right: 10px; z-index: 10000; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
+        .toast { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 11px 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem; animation: slideIn 0.35s ease; width: 100%; max-width: 300px; pointer-events: auto; }
+        .toast.success { border-left: 4px solid var(--success); } .toast.error { border-left: 4px solid var(--danger); } .toast.warning { border-left: 4px solid var(--warning); }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (min-width: 768px) {
+            .stats-grid, .inv-stats, .cat-grid { grid-template-columns: repeat(4, 1fr); }
+            .page-content { padding: 22px; }
+            .box { padding: 22px; }
+        }
+        @media (min-width: 769px) {
+            .sidebar { left: -100%; box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
+            .sidebar.mob-open { left: 0; }
+        }
+        @media (max-width: 480px) {
+            .store-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .store-img { height: 125px; }
+            .store-body { padding: 11px; }
+            .store-name { font-size: 0.8rem; margin-bottom: 5px; }
+            .store-price { font-size: 0.95rem; margin-bottom: 6px; }
+            .btn-add-cart { padding: 8px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <div id="loader">
+        <div class="loader-icon"><i class='bx bxs-building-house'></i></div>
+        <div class="loader-text-wrap">
+            <span class="loader-text-1">OJJO</span>
+            <span class="loader-dot">.</span>
+            <span class="loader-text-2">STROY</span>
+        </div>
+        <div class="loader-line"></div>
+        <div class="loader-subtitle">Premium Qurilish Materiallari</div>
+    </div>
+
+    <div id="public-page">
+        <nav class="store-nav">
+            <div class="logo font-brand"><i class='bx bxs-building-house'></i> OJJO.STROY</div>
+            <button class="admin-trigger" onclick="showModal('auth-modal')">&#169; Admin</button>
+        </nav>
+        <div class="hero">
+            <span class="hero-badge"><i class='bx bxs-badge-check'></i> Ishonchli yetkazib beruvchi</span>
+            <h1 class="font-brand">Qurilish uchun eng yaxshi<br>materiallar</h1>
+            <p>O'zbekiston bo'ylab sifatli va ishonchli qurilish materiallarini eng arzon narxlarda yetkazib beramiz.</p>
+        </div>
+        <div class="container">
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <div class="search-top"><i class='bx bx-search'></i><input type="text" id="search-inp" placeholder="Mahsulot qidiring..." oninput="renderStoreGrid()"></div>
+                    <div class="tags-container" id="public-tags"></div>
+                </div>
+            </div>
+            <div class="store-controls">
+                <div class="mode-toggle">
+                    <button class="mode-btn active" id="btn-day" onclick="setGlobalTheme('light')"><i class='bx bx-sun'></i> Kunduzgi</button>
+                    <button class="mode-btn" id="btn-night" onclick="setGlobalTheme('dark')"><i class='bx bx-moon'></i> Tungi</button>
+                </div>
+                <div style="position:relative;">
+                    <button class="btn btn-primary" style="margin:0; position:relative;" onclick="toggleCart()"><i class='bx bx-cart-alt'></i> Savat <span class="cart-badge" id="top-cart-badge" style="position:absolute; top:-6px; right:-6px; display:none;">0</span></button>
+                </div>
+            </div>
+            <div class="store-grid" id="public-grid"></div>
+        </div>
+    </div>
+
+    <div class="overlay" id="auth-modal">
+        <div class="modal">
+            <button class="close-modal" onclick="hideModal('auth-modal')"><i class='bx bx-x'></i></button>
+            <h2><i class='bx bx-lock-alt' style="color:var(--accent)"></i> Admin Kirish</h2>
+            <div class="fg"><input type="password" id="pass-inp" placeholder="Parolni kiriting..." onkeypress="if(event.key==='Enter') loginAdmin()"></div>
+            <div class="modal-actions"><button class="m-cancel" onclick="hideModal('auth-modal')">Bekor qilish</button><button class="m-save" id="login-btn" onclick="loginAdmin()">Kirish</button></div>
+        </div>
+    </div>
+    <div class="overlay" id="confirm-modal">
+        <div class="modal" style="max-width: 400px; text-align: center;">
+            <i class='bx bx-error-circle' style="font-size: 2.5rem; color: var(--warning); margin-bottom: 10px; display:block;"></i>
+            <h2 id="confirm-text" style="font-size: 0.95rem; margin-bottom: 10px;"></h2>
+            <div class="modal-actions"><button class="m-cancel" onclick="hideModal('confirm-modal')">Bekor qilish</button><button class="m-save" id="confirm-yes-btn" style="background: var(--danger);">Ha, tasdiqlayman</button></div>
+        </div>
+    </div>
+    <div class="overlay" id="category-modal">
+        <div class="modal" style="max-width: 400px;">
+            <button class="close-modal" onclick="hideModal('category-modal')"><i class='bx bx-x'></i></button>
+            <h2 id="cm-title"><i class='bx bx-category' style="color:var(--accent)"></i> Katalog</h2>
+            <input type="hidden" id="edit-cat-id">
+            <div class="fg"><label>Katalog nomi</label><input type="text" id="c-name" placeholder="Masalan: Izolyatsiya"></div>
+            <div class="modal-actions"><button class="m-cancel" onclick="hideModal('category-modal')">Bekor qilish</button><button class="m-save" id="cat-save-btn" onclick="saveCategory()">Saqlash</button></div>
+        </div>
+    </div>
+    <div class="overlay" id="product-modal">
+        <div class="modal">
+            <button class="close-modal" onclick="hideModal('product-modal')"><i class='bx bx-x'></i></button>
+            <h2 id="pm-title"><i class='bx bx-package'></i> Mahsulot</h2>
+            <input type="hidden" id="edit-id">
+            <div class="fg"><label>Rasm</label><div class="upload-zone"><i class='bx bx-cloud-upload' style="font-size: 1.8rem; color: var(--text-muted);"></i><p style="margin-top: 5px; font-size: 0.8rem; color: var(--text-muted);">Rasmni tanlang</p><input type="file" accept="image/*" onchange="handleImgUpload(event)"></div><div class="preview-box" id="preview-box"><img id="preview-img" src="" alt="Preview"></div></div>
+            <div class="fg"><label>Nomi</label><input type="text" id="p-name" placeholder="Gipsokarton 12mm"></div>
+            <div class="fg"><label>Katalog</label><select id="p-cat"></select></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div class="fg"><label>Narx</label><input type="number" id="p-price" placeholder="65000"></div><div class="fg"><label>Soni</label><input type="number" id="p-stock" placeholder="100"></div></div>
+            <div class="modal-actions"><button class="m-cancel" onclick="hideModal('product-modal')">Bekor qilish</button><button class="m-save" id="prod-save-btn" onclick="saveProduct()">Saqlash</button></div>
+        </div>
+    </div>
+    <div class="overlay" id="pd-modal">
+        <div class="modal"><button class="close-modal" onclick="hideModal('pd-modal')"><i class='bx bx-x'></i></button><div id="pd-content"></div></div>
+    </div>
+    <div class="overlay" id="debt-form-modal">
+        <div class="modal">
+            <button class="close-modal" onclick="hideModal('debt-form-modal')"><i class='bx bx-x'></i></button>
+            <h2 id="dm-title"><i class='bx bx-wallet'></i> Qarz</h2>
+            <input type="hidden" id="edit-debt-id">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div class="fg"><label>Ismi</label><input type="text" id="d-name" placeholder="Jasur Umarov"></div><div class="fg"><label>Telefon</label><input type="tel" id="d-phone" placeholder="+998 90 123 45 67"></div></div>
+            <div class="fg"><label>Izoh</label><input type="text" id="d-desc" placeholder="Gipsokarton uchun"></div>
+            <div class="fg"><label>Qarz summasi</label><input type="number" id="d-amount" placeholder="2500000"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div class="fg"><label>Boshlanish</label><input type="date" id="d-start"></div><div class="fg"><label>Muddati</label><input type="date" id="d-end"></div></div>
+            <div class="modal-actions"><button class="m-cancel" onclick="hideModal('debt-form-modal')">Bekor qilish</button><button class="m-save" id="debt-save-btn" onclick="saveDebt()">Saqlash</button></div>
+        </div>
+    </div>
+    <div class="overlay" id="change-pass-modal">
+        <div class="modal" style="max-width: 420px;">
+            <button class="close-modal" onclick="hideModal('change-pass-modal')"><i class='bx bx-x'></i></button>
+            <h2><i class='bx bx-key' style="color:var(--accent)"></i> Parolni o'zgartirish</h2>
+            <div class="fg"><label>Joriy parol</label><input type="password" id="cp-current" placeholder="Joriy parolingiz"></div>
+            <div class="fg"><label>Yangi parol</label><input type="password" id="cp-new" placeholder="Kamida 6 ta belgi"></div>
+            <div class="fg"><label>Yangi parolni takrorlang</label><input type="password" id="cp-confirm" placeholder="Yangi parolni qayta kiriting" onkeypress="if(event.key==='Enter') submitChangePassword()"></div>
+            <div class="modal-actions"><button class="m-cancel" onclick="hideModal('change-pass-modal')">Bekor qilish</button><button class="m-save" id="cp-save-btn" onclick="submitChangePassword()">Saqlash</button></div>
+        </div>
+    </div>
+    <div class="overlay" id="debt-modal">
+        <div class="modal" style="max-width: 400px;">
+            <button class="close-modal" onclick="hideModal('debt-modal')"><i class='bx bx-x'></i></button>
+            <h2 style="color:var(--danger);font-size:1rem"><i class='bx bx-error-circle'></i> BUGUN QARZ TO'LASHI KERAK</h2>
+            <div id="debt-popup-list"></div>
+        </div>
+    </div>
+
+    <div id="admin-page" class="app hidden">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo txt font-brand"><i class='bx bxs-building-house'></i> <span>OJJO.STROY</span></div>
+            <ul class="nav-menu">
+                <li class="nav-link active" onclick="loadPage('dashboard', this)"><i class='bx bxs-dashboard'></i><span class="txt">Dashboard</span></li>
+                <li class="nav-link" onclick="loadPage('products', this)"><i class='bx bxs-box'></i><span class="txt">Mahsulotlar</span></li>
+                <li class="nav-link" onclick="loadPage('catalogs', this)"><i class='bx bx-category'></i><span class="txt">Kataloglar</span></li>
+                <li class="nav-link" onclick="loadPage('inventory', this)"><i class='bx bxs-archive'></i><span class="txt">Ombor</span></li>
+                <li class="nav-link" onclick="loadPage('debts', this)"><i class='bx bx-wallet'></i><span class="txt">Qarzlar</span></li>
+            </ul>
+            <div class="sb-footer"><button class="btn-back" onclick="exitAdmin()"><i class='bx bx-arrow-back'></i><span class="txt">Saytga qaytish</span></button></div>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <div class="top-left">
+                    <button class="toggle-sb" onclick="toggleSidebar()"><i class='bx bx-menu'></i></button>
+                    <h3 style="font-weight:800;font-size:1rem" id="page-title">Dashboard</h3>
+                </div>
+                <div class="top-right">
+                    <button class="theme-btn" onclick="setGlobalTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark')"><i class='bx bx-moon' id="theme-icon"></i></button>
+                    <button class="theme-btn" title="Parolni o'zgartirish" onclick="openChangePassword()"><i class='bx bx-key'></i></button>
+                    <div class="avatar">A</div>
+                </div>
+            </header>
+            <section class="page-content" id="dynamic-content"></section>
+        </main>
+    </div>
+
+    <div class="cart-panel" id="cart-panel">
+        <div class="cart-header"><h3><i class='bx bx-cart-alt' style="color:var(--accent)"></i> Savat</h3><button class="close-modal" onclick="toggleCart()" style="position:static"><i class='bx bx-x'></i></button></div>
+        <div class="cart-items" id="cart-items"><div class="cart-empty"><i class="bx bx-cart-add"></i><p>Savat bo'sh</p></div></div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Jami:</span><span id="cart-total-price">0 so'm</span></div>
+            <button class="btn-checkout" id="checkout-btn" onclick="checkout()"><i class='bx bx-credit-card'></i> To'lov qilish</button>
+            <button class="btn-clear-cart" onclick="clearCart()">Savatlarni tozalash</button>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================================
+        // API QATLAMI — bu yerda backend manzilini sozlang.
+        // Firebase Hosting orqali joylashtirsangiz "/api" ishlayveradi (rewrite bor).
+        // Agar boshqa joyda joylasangiz, to'liq Cloud Function manzilini yozing:
+        //   masalan: "https://europe-west1-LOYIHA-ID.cloudfunctions.net/api"
+        // =====================================================================
+        const API_BASE = "/api";
+        let adminToken = null; // xotirada saqlanadi (sahifa yangilansa qayta login kerak)
+
+        async function apiFetch(path, opts = {}) {
+            const headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
+            if (adminToken) headers["Authorization"] = "Bearer " + adminToken;
+            const res = await fetch(API_BASE + path, Object.assign({}, opts, { headers }));
+            let data = null;
+            try { data = await res.json(); } catch (e) { /* bo'sh javob */ }
+            if (!res.ok) throw new Error((data && data.error) || "Server xatosi");
+            return data;
+        }
+
+        let catalogs = [], products = [], debts = [];
+        let activeCat = 'Hammasi', tempImg = '', chartInstance = null, cart = [], confirmCallback = null;
+
+        function getCatName(catId) { let c = catalogs.find(x => x.id === catId); return c ? c.name : 'Noma\'lum'; }
+        function updateCatSelects() { let sel = document.getElementById('p-cat'); if(!sel) return; sel.innerHTML = catalogs.map(c => `<option value="${c.id}">${c.name}</option>`).join(''); }
+        function renderPublicTags() { let cont = document.getElementById('public-tags'); if(!cont) return; let tags = ['<div class="tag '+(activeCat==='Hammasi'?'active':'')+'" onclick="filterCat(\'Hammasi\', this)">Hammasi</div>']; catalogs.forEach(c => { tags.push('<div class="tag '+(activeCat===c.name?'active':'')+'" onclick="filterCat(\''+c.name+'\', this)">'+c.name+'</div>'); }); cont.innerHTML = tags.join(''); }
+
+        window.addEventListener('load', async function() {
+            await loadPublicData();
+            setTimeout(function() { document.getElementById('loader').classList.add('loader-hidden'); }, 700);
+        });
+
+        async function loadPublicData() {
+            document.getElementById('public-grid').innerHTML = Array(6).fill('<div class="skeleton skeleton-card"></div>').join('');
+            try {
+                const [cats, prods] = await Promise.all([apiFetch('/categories'), apiFetch('/products')]);
+                catalogs = cats; products = prods;
+            } catch (e) {
+                showToast("Ma'lumotlarni yuklashda xatolik: " + e.message, 'error');
+                catalogs = []; products = [];
+            }
+            renderPublicTags();
+            renderStoreGrid();
+        }
+
+        function showModal(id) { document.getElementById(id).classList.add('show'); document.body.style.overflow = 'hidden'; }
+        function hideModal(id) { document.getElementById(id).classList.remove('show'); document.body.style.overflow = ''; }
+        document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) hideModal(o.id); }));
+
+        function setGlobalTheme(t) { document.documentElement.setAttribute('data-theme', t); syncThemeButtons(); if(chartInstance){chartInstance.destroy();chartInstance=null;initChart();} }
+        function syncThemeButtons() { let d=document.documentElement.getAttribute('data-theme')==='dark'; let bd=document.getElementById('btn-day'), bn=document.getElementById('btn-night'); if(bd)bd.classList.toggle('active',!d); if(bn)bn.classList.toggle('active',d); let i=document.getElementById('theme-icon'); if(i) i.className=d?'bx bx-sun':'bx bx-moon'; }
+        function filterCat(c, el) { activeCat=c; document.querySelectorAll('.tag').forEach(e=>e.classList.remove('active')); el.classList.add('active'); renderStoreGrid(); }
+        function showToast(m, t='success') { let c=document.getElementById('toast-container'),to=document.createElement('div');to.className='toast '+t;let im={success:'bx-check-circle',error:'bx-error-circle',warning:'bx-error'},cl={success:'var(--success)',error:'var(--danger)',warning:'var(--warning)'};to.innerHTML='<i class="bx '+im[t]+'" style="font-size:1.2rem;color:'+cl[t]+'"></i><span style="flex:1;text-align:left">'+m+'</span>';c.appendChild(to);setTimeout(()=>{to.style.opacity='0';to.style.transform='translateY(-20px)';to.style.transition='all 0.3s';setTimeout(()=>{if(to.parentNode)to.parentNode.removeChild(to);},300);},3000); }
+        function showConfirm(m, cb) { document.getElementById('confirm-text').innerText=m; confirmCallback=cb; showModal('confirm-modal'); }
+        document.getElementById('confirm-yes-btn').addEventListener('click', function() { hideModal('confirm-modal'); if(confirmCallback) confirmCallback(); confirmCallback=null; });
+
+        function renderStoreGrid() { let g=document.getElementById('public-grid'),q=document.getElementById('search-inp').value.toLowerCase(),a=products.slice(); if(activeCat!=='Hammasi'){let catObj=catalogs.find(c=>c.name===activeCat);if(catObj)a=a.filter(p=>p.catId===catObj.id);} if(q)a=a.filter(p=>p.name.toLowerCase().indexOf(q)!==-1); if(!a.length){g.innerHTML='<div class="empty-state" style="grid-column:1/-1"><i class="bx bx-box"></i>Mahsulot topilmadi</div>';return;} g.innerHTML=a.map(p=>{let out = p.stock===0; return '<div class="store-item"><div class="store-img" onclick="openProductDetail(\''+p.id+'\')">'+(out?'<span class="stock-badge">Tugagan</span>':'')+(p.image?'<img src="'+p.image+'" alt="'+p.name+'">':'')+'</div><div class="store-body"><div class="store-name">'+p.name+'</div><div class="store-price">'+p.price.toLocaleString('uz-UZ')+" so'm</div><button class=\"btn-add-cart\" "+(out?'disabled':'')+" onclick=\"event.stopPropagation();addToCart('"+p.id+"')\"><i class=\"bx bx-plus\"></i> "+(out?'Tugagan':'Savatga')+"</button></div></div>";}).join(''); updateCartBadge(); }
+        function openProductDetail(id) { let p=products.find(x=>x.id===id); if(!p)return; document.getElementById('pd-content').innerHTML=(p.image?'<img src="'+p.image+'" class="pd-img">':'')+'<div style="display:inline-block;padding:3px 8px;background:var(--accent-light);color:var(--accent);border-radius:6px;font-size:0.8rem;font-weight:700;margin-bottom:8px;">'+getCatName(p.catId)+'</div><h2 style="margin-bottom:8px;font-size:1.1rem;">'+p.name+'</h2><div class="pd-price">'+p.price.toLocaleString('uz-UZ')+" so'm</div><p style=\"color:var(--text-muted);margin-bottom:20px;font-size:0.9rem;\">Omborda: "+p.stock+' dona.</p><button class="btn-add-cart" '+(p.stock===0?'disabled':'')+' onclick="hideModal(\'pd-modal\');addToCart(\''+p.id+'\')" style="padding:12px;font-size:0.9rem;"><i class="bx bx-cart-add"></i> Savatga qo\'shish</button>'; showModal('pd-modal'); }
+
+        function toggleCart() { let cp = document.getElementById('cart-panel'); if(cp.classList.contains('open')){ cp.classList.remove('open'); document.body.style.overflow=''; } else { cp.classList.add('open'); document.body.style.overflow='hidden'; } }
+        function addToCart(id) { let p=products.find(x=>x.id===id); if(!p)return; let e=cart.find(i=>i.id===id); if(e){if(e.qty<p.stock)e.qty++;else{showToast('Omborda yetarli mahsulot yo\'q!','warning');return;}}else{cart.push({id:p.id,name:p.name,price:p.price,image:p.image,qty:1,maxStock:p.stock});} updateCartUI(); toggleCart(); showToast(p.name+' savatga qo\'shildi'); }
+        function changeQty(id, d) { let i=cart.find(x=>x.id===id); if(!i)return; i.qty+=d; if(i.qty<=0)cart=cart.filter(x=>x.id!==id); else if(i.qty>i.maxStock){i.qty=i.maxStock;showToast('Omborda shuncha yo\'q!','warning');} updateCartUI(); }
+        function clearCart() { if(!cart.length)return; cart=[]; updateCartUI(); showToast('Savat tozalandi'); }
+        function updateCartUI() { let c=document.getElementById('cart-items'),t=document.getElementById('cart-total-price'); if(!cart.length){c.innerHTML='<div class="cart-empty"><i class="bx bx-cart-add"></i><p>Savat bo\'sh</p></div>';t.innerText="0 so'm";updateCartBadge();return;} let total=0; c.innerHTML=cart.map(i=>{let s=i.price*i.qty;total+=s;return '<div class="cart-item"><img src="'+(i.image||'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==')+'" class="cart-item-img"><div class="cart-item-info"><div class="cart-item-name">'+i.name+'</div><div class="cart-item-price">'+s.toLocaleString('uz-UZ')+" so'm</div></div><div class=\"cart-item-actions\"><button class=\"qty-btn\" onclick=\"changeQty('"+i.id+"', -1)\">-</button><span style=\"font-weight:700;min-width:20px;text-align:center;font-size:0.9rem\">"+i.qty+'</span><button class="qty-btn" onclick="changeQty(\''+i.id+'\', 1)">+</button></div></div>';}).join(''); t.innerText=total.toLocaleString('uz-UZ')+" so'm"; updateCartBadge(); }
+        function updateCartBadge() { let b=document.getElementById('top-cart-badge'); if(cart.length>0){b.style.display='flex';b.innerText=cart.reduce((s,i)=>s+i.qty,0);}else{b.style.display='none';} }
+
+        async function checkout() {
+            if(!cart.length){showToast("Savat bo'sh!",'warning');return;}
+            const btn = document.getElementById('checkout-btn');
+            btn.disabled = true; btn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Yuborilmoqda...';
+            try {
+                const items = cart.map(i => ({ id: i.id, qty: i.qty }));
+                const result = await apiFetch('/orders', { method: 'POST', body: JSON.stringify({ items }) });
+                showToast("To'lov muvaffaqiyatli! Chek #" + result.receiptNo);
+                cart = [];
+                updateCartUI();
+                toggleCart();
+                await loadPublicData();
+            } catch (e) {
+                showToast(e.message, 'error');
+            } finally {
+                btn.disabled = false; btn.innerHTML = '<i class="bx bx-credit-card"></i> To\'lov qilish';
+            }
+        }
+
+        async function loginAdmin() {
+            const pass = document.getElementById('pass-inp').value;
+            const btn = document.getElementById('login-btn');
+            if (!pass) { showToast('Parolni kiriting!', 'error'); return; }
+            btn.disabled = true; btn.innerText = 'Tekshirilmoqda...';
+            try {
+                const res = await apiFetch('/auth/login', { method: 'POST', body: JSON.stringify({ password: pass }) });
+                adminToken = res.token;
+                hideModal('auth-modal');
+                document.getElementById('pass-inp').value = '';
+                document.getElementById('public-page').classList.add('hidden');
+                document.getElementById('admin-page').classList.remove('hidden');
+                await loadPage('dashboard', document.querySelector('.nav-link.active'));
+                checkTodayDebts();
+                showToast('Xush kelibsiz!');
+            } catch (e) {
+                showToast(e.message || "Parol noto'g'ri!", 'error');
+            } finally {
+                btn.disabled = false; btn.innerText = 'Kirish';
+            }
+        }
+
+        async function checkTodayDebts() {
+            try {
+                const list = await apiFetch('/debts/today');
+                if (list.length) {
+                    document.getElementById('debt-popup-list').innerHTML = list.map(d=>'<div class="debt-card"><div><h4 style="font-weight:700;font-size:0.9rem">'+d.name+'</h4><span style="font-size:0.75rem;color:var(--text-muted)">'+d.phone+'</span><div style="margin-top:4px;font-weight:800;color:var(--danger)">'+d.amount.toLocaleString('uz-UZ')+" so'm</div></div></div>").join('');
+                    setTimeout(()=>showModal('debt-modal'),1000);
+                }
+            } catch (e) { /* jim */ }
+        }
+
+        function openChangePassword() {
+            document.getElementById('cp-current').value = '';
+            document.getElementById('cp-new').value = '';
+            document.getElementById('cp-confirm').value = '';
+            showModal('change-pass-modal');
+        }
+
+        async function submitChangePassword() {
+            const current = document.getElementById('cp-current').value;
+            const next = document.getElementById('cp-new').value;
+            const confirm = document.getElementById('cp-confirm').value;
+
+            if (!current || !next || !confirm) { showToast("Barcha maydonlarni to'ldiring!", 'error'); return; }
+            if (next.length < 6) { showToast("Yangi parol kamida 6 ta belgidan iborat bo'lsin!", 'error'); return; }
+            if (next !== confirm) { showToast("Yangi parollar mos kelmadi!", 'error'); return; }
+            if (next === current) { showToast("Yangi parol joriy paroldan farq qilishi kerak!", 'warning'); return; }
+
+            const btn = document.getElementById('cp-save-btn');
+            btn.disabled = true; btn.innerText = 'Saqlanmoqda...';
+            try {
+                await apiFetch('/auth/change-password', {
+                    method: 'POST',
+                    body: JSON.stringify({ currentPassword: current, newPassword: next })
+                });
+                hideModal('change-pass-modal');
+                showToast("Parol muvaffaqiyatli o'zgartirildi!");
+            } catch (e) {
+                showToast(e.message, 'error');
+            } finally {
+                btn.disabled = false; btn.innerText = 'Saqlash';
+            }
+        }
+
+        function exitAdmin() { adminToken = null; document.getElementById('admin-page').classList.add('hidden');document.getElementById('public-page').classList.remove('hidden');hideModal('debt-modal');if(chartInstance){chartInstance.destroy();chartInstance=null;} loadPublicData(); }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('mob-open'); }
+
+        async function loadPage(p, el) {
+            document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active')); el.classList.add('active');
+            let t=document.getElementById('page-title'),c=document.getElementById('dynamic-content');
+            document.getElementById('sidebar').classList.remove('mob-open');
+            if(chartInstance){chartInstance.destroy();chartInstance=null;}
+            c.innerHTML = '<div class="skeleton" style="height:200px"></div>';
+            try {
+                if(p==='dashboard'){ t.innerText='Dashboard'; const stats = await apiFetch('/dashboard'); c.innerHTML=getDashboardHTML(stats); initChart(stats); }
+                if(p==='products'){ t.innerText='Mahsulotlar'; products = await apiFetch('/products'); catalogs = await apiFetch('/categories'); updateCatSelects(); c.innerHTML=getProductsHTML(); }
+                if(p==='catalogs'){ t.innerText='Kataloglar'; catalogs = await apiFetch('/categories'); products = await apiFetch('/products'); c.innerHTML=getCatalogsHTML(); }
+                if(p==='inventory'){ t.innerText='Ombor'; products = await apiFetch('/products'); catalogs = await apiFetch('/categories'); c.innerHTML=getInventoryHTML(); }
+                if(p==='debts'){ t.innerText='Qarzlar'; debts = await apiFetch('/debts'); c.innerHTML=getDebtsHTML(); renderDebtsList(debts); }
+            } catch (e) {
+                c.innerHTML = '<div class="empty-state"><i class="bx bx-error-circle"></i>Yuklashda xatolik: ' + e.message + '</div>';
+            }
+        }
+
+        function getDashboardHTML(s) { return '<div class="stats-grid"><div class="stat-box"><div class="stat-icon si-blue"><i class="bx bx-dollar-circle"></i></div><div class="stat-val">'+s.totalDebt.toLocaleString('uz-UZ')+"</div><div class=\"stat-lbl\">Qarzlar</div></div><div class=\"stat-box\"><div class=\"stat-icon si-green\"><i class=\"bx bx-box\"></i></div><div class=\"stat-val\">"+s.productCount+'</div><div class="stat-lbl">Mahsulotlar</div></div><div class="stat-box"><div class="stat-icon si-orange"><i class="bx bx-package"></i></div><div class="stat-val">'+s.totalStock+'</div><div class="stat-lbl">Ombor</div></div><div class="stat-box"><div class="stat-icon si-red"><i class="bx bx-credit-card"></i></div><div class="stat-val">'+s.debtorCount+'</div><div class="stat-lbl">Qarzdorlar</div></div></div><div class="box"><h3>Haftalik savdo</h3><canvas id="mainChart" height="100"></canvas></div>'; }
+
+        function getProductsHTML() { let r=products.map(p=>{let sc=p.stock>20?'sp-success':'sp-warning',st=p.stock>20?'Mavjud':'Tanqis',im=p.image?'<img src="'+p.image+'" class="tbl-img">':'<div style="width:36px;height:36px;background:var(--accent-light);border-radius:9px;display:flex;justify-content:center;align-items:center;color:var(--accent)"><i class="bx bx-box"></i></div>';return '<tr><td>'+im+"</td><td style=\"font-weight:600\">"+p.name+'</td><td>'+getCatName(p.catId)+'</td><td>'+p.price.toLocaleString('uz-UZ')+"</td><td>"+p.stock+'</td><td><span class="status-pill '+sc+'">'+st+"</span></td><td style=\"display:flex;gap:5px\"><button class=\"btn btn-ghost\" onclick=\"openProductForm('edit', '"+p.id+"')\"><i class=\"bx bx-edit\"></i></button><button class=\"btn btn-danger-ghost\" onclick=\"deleteProduct('"+p.id+"')\"><i class=\"bx bx-trash\"></i></button></td></tr>";}).join(''); return '<button class="btn btn-primary" onclick="openProductForm(\'add\')"><i class="bx bx-plus"></i> Qo\'shish</button><div class="box"><div class="tbl-wrap"><table><thead><tr><th>Rasm</th><th>Nomi</th><th>Katalog</th><th>Narx</th><th>Soni</th><th>Status</th><th>Amallar</th></tr></thead><tbody>'+(r||'<tr><td colspan="7"><div class="empty-state"><i class="bx bx-box"></i>Mahsulot yo\'q</div></td></tr>')+'</tbody></table></div></div>'; }
+
+        function getCatalogsHTML() { let cards=catalogs.map(c=>{let count=products.filter(p=>p.catId===c.id).length;return '<div class="cat-card"><div class="cat-icon"><i class="bx bxs-folder"></i></div><div class="cat-name">'+c.name+'</div><div class="cat-count">'+count+' ta</div><div class="cat-actions"><button class="btn btn-ghost" onclick="openCatForm(\'edit\', \''+c.id+'\')"><i class="bx bx-edit"></i></button><button class="btn btn-danger-ghost" onclick="deleteCat(\''+c.id+'\')"><i class="bx bx-trash"></i></button></div></div>';}).join(''); return '<button class="btn btn-primary" onclick="openCatForm(\'add\')"><i class="bx bx-plus"></i> Katalog qo\'shish</button><div class="cat-grid">'+(cards||'<div class="empty-state" style="grid-column:1/-1"><i class="bx bx-category"></i>Katalog yo\'q</div>')+'</div>'; }
+
+        function openCatForm(m,id){document.getElementById('c-name').value='';document.getElementById('edit-cat-id').value='';if(m==='edit'&&id){let c=catalogs.find(x=>x.id===id);if(!c)return;document.getElementById('cm-title').innerHTML='<i class="bx bx-edit" style="color:var(--accent)"></i> Tahrirlash';document.getElementById('edit-cat-id').value=id;document.getElementById('c-name').value=c.name;}else{document.getElementById('cm-title').innerHTML='<i class="bx bx-plus-circle" style="color:var(--accent)"></i> Yangi Katalog';}showModal('category-modal');}
+
+        async function saveCategory(){
+            let n=document.getElementById('c-name').value.trim(),id=document.getElementById('edit-cat-id').value;
+            if(!n){showToast("Nomini kiriting!",'error');return;}
+            const btn = document.getElementById('cat-save-btn'); btn.disabled = true;
+            try {
+                if(id){ await apiFetch('/categories/'+id, { method:'PUT', body: JSON.stringify({name:n}) }); showToast('Tahrirlandi!'); }
+                else { await apiFetch('/categories', { method:'POST', body: JSON.stringify({name:n}) }); showToast('Qo\'shildi!'); }
+                hideModal('category-modal');
+                catalogs = await apiFetch('/categories');
+                renderPublicTags();
+                document.getElementById('dynamic-content').innerHTML = getCatalogsHTML();
+            } catch(e) { showToast(e.message, 'error'); } finally { btn.disabled = false; }
+        }
+
+        async function deleteCat(id){
+            let c=catalogs.find(x=>x.id===id); if(!c)return;
+            showConfirm("'"+c.name+"' o'chirmoqchimisiz?", async ()=>{
+                try {
+                    await apiFetch('/categories/'+id, { method:'DELETE' });
+                    showToast('O\'chirildi!');
+                    catalogs = await apiFetch('/categories');
+                    renderPublicTags();
+                    document.getElementById('dynamic-content').innerHTML = getCatalogsHTML();
+                } catch(e) { showToast(e.message, 'error'); }
+            });
+        }
+
+        function getInventoryHTML(){let tT=products.length,tU=products.reduce((s,p)=>s+p.stock,0),cC=products.filter(p=>p.stock<=10).length,tV=products.reduce((s,p)=>s+(p.price*p.stock),0);let s='<div class="inv-stats"><div class="inv-stat"><h4>'+tT+'</h4><p>Turlar</p></div><div class="inv-stat"><h4>'+tU.toLocaleString('uz-UZ')+'</h4><p>Donalar</p></div><div class="inv-stat" style="border-color:var(--danger)"><h4 style="color:var(--danger)">'+cC+'</h4><p>Tanqis</p></div><div class="inv-stat"><h4>'+(tV/1000000).toFixed(1)+'M</h4><p>Qiymat</p></div></div>';let l=products.map(p=>{let pc=Math.min((p.stock/500)*100,100),bc='bar-green',st='Zaxirada';if(p.stock===0){bc='bar-red';st='Tugagan!';}else if(p.stock<=10){bc='bar-red';st='Juda oz';}else if(p.stock<=50){bc='bar-yellow';st='Yetarli emas';}let im=p.image?'<img src="'+p.image+'" class="inv-img">':'<div class="inv-img" style="display:flex;align-items:center;justify-content:center;background:var(--accent-light);color:var(--accent)"><i class="bx bx-box"></i></div>';return '<div class="inv-item">'+im+'<div class="inv-info"><div class="inv-name">'+p.name+'</div><div class="inv-cat">'+getCatName(p.catId)+'</div><div class="inv-bar-wrap"><div class="inv-bar '+bc+'" style="width:'+pc+'%"></div></div><div style="font-size:0.65rem;margin-top:3px;color:var(--text-muted)">'+st+'</div></div><div class="inv-stock-nums"><div class="inv-stock-val">'+p.stock+'</div><span class="inv-stock-label">dona</span></div></div>';}).join('');return '<div class="box">'+s+'<h3><i class="bx bxs-archive" style="color:var(--accent)"></i> Zaxira</h3><div class="inv-list">'+(l||'<div class="empty-state"><i class="bx bx-package"></i>Mahsulot yo\'q</div>')+'</div></div>';}
+
+        function getDebtsHTML(){return '<button class="btn btn-primary" onclick="openDebtForm(\'add\')"><i class="bx bx-plus"></i> Qo\'shish</button><div class="box"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px"><h3 style="margin:0;font-size:0.95rem">Qarzdorlar</h3><div class="search-box" style="margin:0;padding:8px 10px;border-radius:10px"><div class="search-top" style="gap:6px"><i class="bx bx-search" style="font-size:0.9rem"></i><input type="text" id="debt-search" placeholder="Qidirish..." oninput="filterDebts()" style="font-size:0.85rem"></div></div></div><div class="tbl-wrap" id="debt-table-wrap"></div></div>';}
+
+        function renderDebtsList(arr){arr=arr.slice().sort((a,b)=>a.name.localeCompare(b.name,'uz'));let w=document.getElementById('debt-table-wrap');if(!w)return;if(!arr.length){w.innerHTML='<div class="empty-state"><i class="bx bx-search-alt-2"></i>Topilmadi</div>';return;}let r=arr.map(d=>{let s=getDebtStatus(d.endDate,d.paid);return '<tr><td style="font-weight:600">'+d.name+'</td><td>'+d.phone+'</td><td>'+d.desc+'</td><td style="font-weight:700;color:var(--danger)">'+d.amount.toLocaleString('uz-UZ')+"</td><td>"+d.endDate+'</td><td><span class="status-pill '+s.cls+'">'+s.text+"</span></td><td style=\"display:flex;gap:5px\"><button class=\"btn btn-ghost\" onclick=\"openDebtForm('edit', '"+d.id+"')\"><i class=\"bx bx-edit\"></i></button>"+(d.paid?'':'<button class="btn btn-ghost" style="background:rgba(16,185,129,0.1);color:var(--success)" onclick="markDebtPaid(\''+d.id+'\')"><i class="bx bx-check"></i></button>')+'<button class="btn btn-danger-ghost" onclick="deleteDebt(\''+d.id+'\')"><i class="bx bx-trash"></i></button></td></tr>';}).join('');w.innerHTML='<table><thead><tr><th>Ism</th><th>Telefon</th><th>Izoh</th><th>Summa</th><th>Muddat</th><th>Holat</th><th>Amallar</th></tr></thead><tbody>'+r+'</tbody></table>';}
+        function filterDebts(){let q=document.getElementById('debt-search').value.toLowerCase();renderDebtsList(debts.filter(d=>d.name.toLowerCase().indexOf(q)!==-1||d.phone.indexOf(q)!==-1||d.desc.toLowerCase().indexOf(q)!==-1));}
+        function getDebtStatus(ed,pd){if(pd)return{text:"To'landi",cls:"sp-success"};let t=new Date();t.setHours(0,0,0,0);let e=new Date(ed);e.setHours(0,0,0,0);let d=Math.ceil((e-t)/(1000*60*60*24));if(d<0)return{text:"O'tgan",cls:"sp-danger"};if(d===0)return{text:"Bugun",cls:"sp-warning"};return{text:"(" +d + " kun)",cls:"sp-success"};}
+
+        function openProductForm(m,id){tempImg='';document.getElementById('preview-box').style.display='none';document.querySelector('.upload-zone input').value='';updateCatSelects();if(m==='edit'&&id){let p=products.find(x=>x.id===id);if(!p)return;document.getElementById('pm-title').innerHTML='<i class="bx bx-edit"></i> Tahrirlash';document.getElementById('edit-id').value=id;document.getElementById('p-name').value=p.name;document.getElementById('p-cat').value=p.catId;document.getElementById('p-price').value=p.price;document.getElementById('p-stock').value=p.stock;if(p.image){tempImg=p.image;document.getElementById('preview-img').src=p.image;document.getElementById('preview-box').style.display='block';}}else{document.getElementById('pm-title').innerHTML='<i class="bx bx-plus-circle"></i> Yangi';document.getElementById('edit-id').value='';document.getElementById('p-name').value='';document.getElementById('p-price').value='';document.getElementById('p-stock').value='';}showModal('product-modal');}
+        function handleImgUpload(e){let f=e.target.files[0];if(f){let r=new FileReader();r.onload=ev=>{tempImg=ev.target.result;document.getElementById('preview-img').src=tempImg;document.getElementById('preview-box').style.display='block';};r.readAsDataURL(f);}}
+
+        async function saveProduct(){
+            let n=document.getElementById('p-name').value.trim(),c=document.getElementById('p-cat').value,pr=parseInt(document.getElementById('p-price').value),st=parseInt(document.getElementById('p-stock').value),id=document.getElementById('edit-id').value;
+            if(!n||isNaN(pr)||isNaN(st)||!c){showToast("Maydonlarni to'ldiring!",'error');return;}
+            if(pr<=0||st<0){showToast("Narx va son to'g'ri kiriting!",'error');return;}
+            const btn = document.getElementById('prod-save-btn'); btn.disabled = true;
+            try {
+                const payload = { name:n, catId:c, price:pr, stock:st, image: tempImg || undefined };
+                if(id){ await apiFetch('/products/'+id, { method:'PUT', body: JSON.stringify(payload) }); showToast('Tahrirlandi!'); }
+                else { await apiFetch('/products', { method:'POST', body: JSON.stringify(payload) }); showToast('Qo\'shildi!'); }
+                hideModal('product-modal');
+                products = await apiFetch('/products');
+                document.getElementById('dynamic-content').innerHTML = getProductsHTML();
+            } catch(e) { showToast(e.message, 'error'); } finally { btn.disabled = false; }
+        }
+
+        async function deleteProduct(id){
+            let p=products.find(x=>x.id===id); if(!p)return;
+            showConfirm("'"+p.name+"' o'chirmoqchimisiz?", async ()=>{
+                try {
+                    await apiFetch('/products/'+id, { method:'DELETE' });
+                    showToast('O\'chirildi!');
+                    products = await apiFetch('/products');
+                    document.getElementById('dynamic-content').innerHTML = getProductsHTML();
+                } catch(e) { showToast(e.message, 'error'); }
+            });
+        }
+
+        function openDebtForm(m,id){document.getElementById('d-name').value='';document.getElementById('d-phone').value='';document.getElementById('d-desc').value='';document.getElementById('d-amount').value='';document.getElementById('d-start').value='';document.getElementById('d-end').value='';document.getElementById('edit-debt-id').value='';if(m==='edit'&&id){let d=debts.find(x=>x.id===id);if(!d)return;document.getElementById('dm-title').innerHTML='<i class="bx bx-edit"></i> Tahrirlash';document.getElementById('edit-debt-id').value=id;document.getElementById('d-name').value=d.name;document.getElementById('d-phone').value=d.phone;document.getElementById('d-desc').value=d.desc;document.getElementById('d-amount').value=d.amount;document.getElementById('d-start').value=d.startDate;document.getElementById('d-end').value=d.endDate;}else{document.getElementById('dm-title').innerHTML='<i class="bx bx-wallet"></i> Yangi Qarz';document.getElementById('d-start').value=new Date().toISOString().split('T')[0];}showModal('debt-form-modal');}
+
+        async function saveDebt(){
+            let n=document.getElementById('d-name').value.trim(),ph=document.getElementById('d-phone').value.trim(),ds=document.getElementById('d-desc').value.trim(),a=parseInt(document.getElementById('d-amount').value),sd=document.getElementById('d-start').value,ed=document.getElementById('d-end').value,id=document.getElementById('edit-debt-id').value;
+            if(!n||!ph||!a||!sd||!ed){showToast("To'ldiring!",'error');return;}
+            if(a<=0){showToast("Summani to'g'ri kiriting!",'error');return;}
+            if(new Date(ed)<new Date(sd)){showToast("Muddat noto'g'ri!",'error');return;}
+            const btn = document.getElementById('debt-save-btn'); btn.disabled = true;
+            try {
+                const payload = { name:n, phone:ph, desc:ds, amount:a, startDate:sd, endDate:ed };
+                if(id){ await apiFetch('/debts/'+id, { method:'PUT', body: JSON.stringify(payload) }); showToast('Tahrirlandi!'); }
+                else { await apiFetch('/debts', { method:'POST', body: JSON.stringify(payload) }); showToast('Qo\'shildi!'); }
+                hideModal('debt-form-modal');
+                debts = await apiFetch('/debts');
+                renderDebtsList(debts);
+            } catch(e) { showToast(e.message, 'error'); } finally { btn.disabled = false; }
+        }
+
+        async function deleteDebt(id){
+            let d=debts.find(x=>x.id===id); if(!d)return;
+            showConfirm("'"+d.name+"' o'chirmoqchimisiz?", async ()=>{
+                try { await apiFetch('/debts/'+id, { method:'DELETE' }); showToast('O\'chirildi!'); debts = await apiFetch('/debts'); renderDebtsList(debts); }
+                catch(e) { showToast(e.message, 'error'); }
+            });
+        }
+
+        async function markDebtPaid(id){
+            let d=debts.find(x=>x.id===id); if(!d)return;
+            showConfirm("'"+d.name+"' to'landi deb belgilansinmi?", async ()=>{
+                try { await apiFetch('/debts/'+id+'/paid', { method:'PATCH' }); showToast('To\'landi!'); debts = await apiFetch('/debts'); renderDebtsList(debts); }
+                catch(e) { showToast(e.message, 'error'); }
+            });
+        }
+
+        function initChart(stats){
+            let c=document.getElementById('mainChart'); if(!c) return;
+            let ctx=c.getContext('2d'),dk=document.documentElement.getAttribute('data-theme')==='dark',gc=dk?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)',tc=dk?'#94a3b8':'#6b7280';
+            const labels = (stats && stats.weeklyLabels) ? stats.weeklyLabels.map(d => d.slice(5)) : ['Dush','Sesh','Chor','Pay','Jum','Shan','Yak'];
+            const data = (stats && stats.weeklySales) ? stats.weeklySales : [0,0,0,0,0,0,0];
+            chartInstance=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{label:"Sotuv (so'm)",data:data,borderColor:'#e8720c',backgroundColor:'rgba(232,114,12,0.12)',borderWidth:3,fill:true,tension:0.4,pointBackgroundColor:'#e8720c',pointBorderColor:dk?'#151d2e':'#fff',pointBorderWidth:2,pointRadius:4}]},options:{responsive:true,plugins:{legend:{labels:{color:tc,font:{family:'Inter',weight:'600',size:11}}}},scales:{y:{beginAtZero:true,grid:{color:gc},ticks:{color:tc,font:{size:10}}},x:{grid:{display:false},ticks:{color:tc,font:{size:10}}}}}});
+        }
+    </script>
+</body>
+</html>
